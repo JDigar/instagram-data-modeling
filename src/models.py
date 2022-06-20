@@ -8,24 +8,71 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+# class Person(Base):
+#     __tablename__ = 'person'
+#     # Here we define columns for the table person
+#     # Notice that each column is also a normal Python instance attribute.
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String(250), nullable=False)
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+# class Address(Base):
+#     __tablename__ = 'address'
+#     # Here we define columns for the table address.
+#     # Notice that each column is also a normal Python instance attribute.
+#     id = Column(Integer, primary_key=True)
+#     street_name = Column(String(250))
+#     street_number = Column(String(250))
+#     post_code = Column(String(250), nullable=False)
+#     person_id = Column(Integer, ForeignKey('person.id'))
+#     person = relationship(Person)
 
+    
+    
+    
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(120), nullable=False)
+    full_name = Column(String(120), nullable=False)
+    email = Column(String(120), nullable=False)
+    post = relationship('Post', backref='user', lazy=True)
+
+
+class Post(Base):
+    __tablename__ = 'post'
+    id = Column(Integer, primary_key=True)
+    comment = Column(String(120), nullable=False)
+    likes = Column(String(120), nullable=False)
+    date = Column(String(120), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'),
+        nullable=False)
+
+    def to_dict(self):
+        return {}
+
+
+class post_comment(Base):
+    __tablename__ = 'post_comment'
+    id = Column(Integer, primary_key=True)
+    comment = Column(Integer, primary_key=True)
+    date = Column(String(120), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'),
+        nullable=False)
+    post_id = Column(Integer, ForeignKey('post.id'),
+        nullable=False)
+
+    def to_dict(self):
+        return {}
+
+class post_likes(Base):
+    __tablename__ = 'post_likes'
+    id = Column(Integer, primary_key=True)
+    date = Column(String(120), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'),
+        nullable=False)
+    post_id = Column(Integer, ForeignKey('post.id'),
+        nullable=False)
+        
     def to_dict(self):
         return {}
 
